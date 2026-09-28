@@ -45,3 +45,48 @@ tbody tr:hover {
 td.atlag {
     font-variant-numeric: tabular-nums;
 }
+
+.modositas-gomb {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid #1f3a5f;
+    border-radius: 3px;
+    background: #1f3a5f;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+}
+
+.modositas-gomb:hover {
+    background: #162b47;
+}
+
+.modositas-gomb:focus-visible,
+td input:focus-visible {
+    outline: 2px solid #4b79a8;
+    outline-offset: 2px;
+}
+
+td input {
+    box-sizing: border-box;
+    min-height: 36px;
+    padding: 7px 9px;
+    border: 1px solid #aebdce;
+    border-radius: 3px;
+    background: #fff;
+    color: #1d2733;
+    font: inherit;
+}
+
+td input[type="text"] {
+    width: 100%;
+    min-width: 72px;
+}
+
+td input[type="number"] {
+    width: 92px;
+}
+
+td input:hover {
+    border-color: #1f3a5f;
+}
