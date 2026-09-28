@@ -35,6 +35,20 @@ function adatRogzitese() {
 
     tanulok.push({ nev, osztaly: `${osztaly}.${osztalyBetu}`, atlag });
 
+
+    
     console.log(tanulok);
+    tanulok.forEach((tanulo) => {
+        const sor = document.createElement("tr");
+        sor.innerHTML = `
+            <td>${tanulo.nev}</td>
+            <td>${tanulo.osztaly}</td>
+            <td class="atlag">${tanulo.atlag}</td>
+            <td></td>
+        `;
+        tbody.appendChild(sor);
+    });
+
+
 
 }
