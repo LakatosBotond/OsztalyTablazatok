@@ -9,6 +9,17 @@
 <body>
     <main>
         <h1>Tanulók</h1>
+
+        <h2 id="tanulokCim">Tanuló hozzáadása:</h2>
+
+        <div id="tanulok">
+            <input type="text" id="nev" placeholder="Név">
+            <input type="number" id="OsztalySzam" placeholder="1-12" min="1" max="12">
+            <input type="text" id="OsztalyBetu" placeholder="A-Z" maxlength="1">
+            <input type="number" id="atlag" placeholder="Átlag" min="1" max="5" step="0.01">
+            <button id="hozzaad" onclick="adatRogzitese()">Hozzáadás</button>
+        </div>
+
         <div class="tablakeret">
             <table>
                 <thead>
@@ -24,6 +35,6 @@
         </div>
     </main>
 
-    <script src="main.js"></script>
+    <script src="main2.js"></script>
 </body>
 </html>
