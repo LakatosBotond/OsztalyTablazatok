@@ -22,6 +22,21 @@ tanulok.forEach((tanulo) => {
 });
 
 
+
+function updateTabla() {
+    tbody.innerHTML = "";
+    tanulok.forEach((tanulo) => {
+        const sor = document.createElement("tr");
+        sor.innerHTML = `
+            <td>${tanulo.nev}</td>
+            <td>${tanulo.osztaly}</td>
+            <td class="atlag">${tanulo.atlag}</td>
+            <td></td>
+        `;
+        tbody.appendChild(sor);
+    });
+}
+
 function adatRogzitese() {
     const nev = document.getElementById("nev").value;
     const osztaly = document.getElementById("OsztalySzam").value;
@@ -38,16 +53,7 @@ function adatRogzitese() {
 
     
     console.log(tanulok);
-    tanulok.forEach((tanulo) => {
-        const sor = document.createElement("tr");
-        sor.innerHTML = `
-            <td>${tanulo.nev}</td>
-            <td>${tanulo.osztaly}</td>
-            <td class="atlag">${tanulo.atlag}</td>
-            <td></td>
-        `;
-        tbody.appendChild(sor);
-    });
+    updateTabla();
 
 
 
