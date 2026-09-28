@@ -1,9 +1,9 @@
 body {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: Arial, sans-serif;
     background: #f2f4f7;
     color: #1d2733;
     margin: 0;
-    padding: 32px 16px;
+    padding: 24px 12px;
 }
 
 main {
@@ -11,9 +11,36 @@ main {
     margin: 0 auto;
 }
 
-h1 {
-    font-size: 1.6rem;
-    margin: 0 0 16px;
+h1, #tanulokCim {
+    text-align: center;
+}
+
+#tanulok {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+#tanulok input {
+    padding: 8px;
+    border: 1px solid #b8c0cc;
+    border-radius: 4px;
+    width: 110px;
+}
+
+#nev {
+    width: 200px;
+}
+
+#tanulok button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background: #1f3a5f;
+    color: #fff;
+    cursor: pointer;
 }
 
 .tablakeret {
@@ -27,7 +54,7 @@ table {
 }
 
 th, td {
-    padding: 12px 14px;
+    padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid #d9dee5;
 }
@@ -35,7 +62,6 @@ th, td {
 thead th {
     background: #1f3a5f;
     color: #fff;
-    font-weight: 600;
 }
 
 tbody tr:hover {
