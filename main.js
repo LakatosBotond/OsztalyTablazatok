@@ -6,6 +6,7 @@ const tanulok = [
     { nev: "Horváth Réka",   osztaly: "9.B",  atlag: 5.0 }
 ];
 
+
 const tbody = document.getElementById("tanuloTabla");
 
 function megjelenitSor(tanulo) {
@@ -14,13 +15,13 @@ function megjelenitSor(tanulo) {
     sor.innerHTML = `
         <td>${tanulo.nev}</td>
         <td>${tanulo.osztaly}</td>
-        <td>${tanulo.atlag}</td>
+        <td class="atlag">${tanulo.atlag}</td>
         <td><button type="button" class="modositas-gomb">Módosítás</button></td>
     `;
 
     sor.querySelector(".modositas-gomb").addEventListener("click", () => {
         sor.cells[1].innerHTML = `<input type="text" aria-label="Osztály" value="${tanulo.osztaly}" required>`;
-        sor.cells[2].innerHTML = `<input type="number" aria-label="Átlag" min="1" max="5" step="0.1" value="${tanulo.atlag.toFixed(1)}">`;
+        sor.cells[2].innerHTML = `<input type="number" aria-label="Átlag" min="1" max="5" step="0.1" value="${tanulo.atlag}">`;
         const osztalyInput = sor.cells[1].querySelector("input");
         const atlagInput = sor.cells[2].querySelector("input");
         const mentesGomb = sor.cells[3].querySelector("button");
@@ -37,32 +38,12 @@ function megjelenitSor(tanulo) {
             sor.replaceWith(frissSor);
         });
 
-        mentesGomb.classList.add("mentes-gomb");
         osztalyInput.focus();
     }, { once: true });
 
     return sor;
 }
 
-tanulok.forEach((tanulo) => {
-    const sor = megjelenitSor(tanulo);
-    tbody.appendChild(sor);
-});
-
-
-function updateTabla() {
-    tbody.innerHTML = "";
-    tanulok.forEach((tanulo) => {
-        const sor = document.createElement("tr");
-        sor.innerHTML = `
-            <td>${tanulo.nev}</td>
-            <td>${tanulo.osztaly}</td>
-            <td class="atlag">${tanulo.atlag}</td>
-            <td></td>
-        `;
-        tbody.appendChild(sor);
-    });
-}
 
 function adatRogzitese() {
     const nev = document.getElementById("nev").value;
@@ -77,10 +58,16 @@ function adatRogzitese() {
 
     tanulok.push({ nev, osztaly: `${osztaly}.${osztalyBetu}`, atlag });
 
-
-    
-    console.log(tanulok);
     updateTabla();
 }
 
 
+function updateTabla() {
+    tbody.innerHTML = "";
+    tanulok.forEach((tanulo) => {
+        tbody.appendChild(megjelenitSor(tanulo));
+    });
+}
+
+
+updateTabla();

@@ -8,19 +8,46 @@ const tanulok = [
 
 const tbody = document.getElementById("tanuloTabla");
 
-tanulok.forEach((tanulo) => {
+function megjelenitSor(tanulo) {
     const sor = document.createElement("tr");
 
     sor.innerHTML = `
         <td>${tanulo.nev}</td>
         <td>${tanulo.osztaly}</td>
-        <td class="atlag">${tanulo.atlag}</td>
-        <td></td>
+        <td>${tanulo.atlag}</td>
+        <td><button type="button" class="modositas-gomb">Módosítás</button></td>
     `;
 
+    sor.querySelector(".modositas-gomb").addEventListener("click", () => {
+        sor.cells[1].innerHTML = `<input type="text" aria-label="Osztály" value="${tanulo.osztaly}" required>`;
+        sor.cells[2].innerHTML = `<input type="number" aria-label="Átlag" min="1" max="5" step="0.1" value="${tanulo.atlag.toFixed(1)}">`;
+        const osztalyInput = sor.cells[1].querySelector("input");
+        const atlagInput = sor.cells[2].querySelector("input");
+        const mentesGomb = sor.cells[3].querySelector("button");
+
+        mentesGomb.textContent = "Mentés";
+        mentesGomb.addEventListener("click", () => {
+            if (!osztalyInput.reportValidity() || !atlagInput.reportValidity()) {
+                return;
+            }
+
+            tanulo.osztaly = osztalyInput.value.trim();
+            tanulo.atlag = Number(atlagInput.value);
+            const frissSor = megjelenitSor(tanulo);
+            sor.replaceWith(frissSor);
+        });
+
+        mentesGomb.classList.add("mentes-gomb");
+        osztalyInput.focus();
+    }, { once: true });
+
+    return sor;
+}
+
+tanulok.forEach((tanulo) => {
+    const sor = megjelenitSor(tanulo);
     tbody.appendChild(sor);
 });
-
 
 
 function updateTabla() {
@@ -54,7 +81,6 @@ function adatRogzitese() {
     
     console.log(tanulok);
     updateTabla();
-
-
-
 }
+
+
