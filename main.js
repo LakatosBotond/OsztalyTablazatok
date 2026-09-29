@@ -55,6 +55,13 @@ function megjelenitSor(tanulo) {
         tanulo.atlag = atlag;
         updateTabla();
     };
+    // Törlés gomb
+    sor.querySelector(".torles").onclick = function () {
+        if (confirm(`Biztosan törlöd ezt a tanulót: ${tanulo.nev}?`)) {
+            tanulok.splice(tanulok.indexOf(tanulo), 1);
+            updateTabla();
+        }
+    };
 
     return sor;
 }
