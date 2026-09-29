@@ -1,72 +1,96 @@
 const tanulok = [
-    { nev: "Kovács Anna",    osztaly: "9.A",  atlag: 4.8 },
-    { nev: "Nagy Péter",     osztaly: "10.B", atlag: 4.2 },
-    { nev: "Szabó Eszter",   osztaly: "11.C", atlag: 3.9 },
-    { nev: "Tóth Bence",     osztaly: "12.A", atlag: 4.5 },
-    { nev: "Horváth Réka",   osztaly: "9.B",  atlag: 5.0 }
+    { nev: "Kovács Anna",  szam: 9,  betu: "A", atlag: 4.8 },
+    { nev: "Nagy Péter",   szam: 10, betu: "B", atlag: 4.2 },
+    { nev: "Szabó Eszter", szam: 11, betu: "C", atlag: 3.9 },
+    { nev: "Tóth Bence",   szam: 12, betu: "A", atlag: 4.5 },
+    { nev: "Horváth Réka", szam: 9,  betu: "B", atlag: 5.0 }
 ];
 
-
 const tbody = document.getElementById("tanuloTabla");
+let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
 
-function megjelenitSor(tanulo) {
-    const sor = document.createElement("tr");
-
-    sor.innerHTML = `
-        <td>${tanulo.nev}</td>
-        <td>${tanulo.osztaly}</td>
-        <td class="atlag">${tanulo.atlag}</td>
-        <td><button type="button" class="modositas-gomb">Módosítás</button></td>
-    `;
-
-    sor.querySelector(".modositas-gomb").addEventListener("click", () => {
-        sor.cells[1].innerHTML = `<input type="text" aria-label="Osztály" value="${tanulo.osztaly}" required>`;
-        sor.cells[2].innerHTML = `<input type="number" aria-label="Átlag" min="1" max="5" step="0.1" value="${tanulo.atlag}">`;
-        const osztalyInput = sor.cells[1].querySelector("input");
-        const atlagInput = sor.cells[2].querySelector("input");
-        const mentesGomb = sor.cells[3].querySelector("button");
-
-        mentesGomb.textContent = "Mentés";
-        mentesGomb.addEventListener("click", () => {
-            if (!osztalyInput.reportValidity() || !atlagInput.reportValidity()) {
-                return;
-            }
-
-            tanulo.osztaly = osztalyInput.value.trim();
-            tanulo.atlag = Number(atlagInput.value);
-            const frissSor = megjelenitSor(tanulo);
-            sor.replaceWith(frissSor);
-        });
-
-        osztalyInput.focus();
-    }, { once: true });
-
-    return sor;
+function ervenyes(nev, szam, betu, atlag) {
+    return nev !== ""
+        && szam >= 1 && szam <= 12
+        && /^[A-Z]$/.test(betu)
+        && atlag >= 1 && atlag <= 5;
 }
 
-function adatRogzitese() {
-    const nev = document.getElementById("nev").value;
-    const osztaly = document.getElementById("OsztalySzam").value;
-    const osztalyBetu = document.getElementById("OsztalyBetu").value;
-    const atlag = parseFloat(document.getElementById("atlag").value);
+function hozzaad() {
+    const nev = document.getElementById("nev").value.trim();
+    const szam = Number(document.getElementById("OsztalySzam").value);
+    const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("atlag").value);
 
-    if (nev === "" || osztaly === "" || osztalyBetu === "" || isNaN(atlag)) {
-        alert("Tölts ki minden mezőt!");
+    if (!ervenyes(nev, szam, betu, atlag)) {
+        alert("Tölts ki minden mezőt helyesen!");
         return;
     }
 
-    tanulok.push({ nev, osztaly: `${osztaly}.${osztalyBetu}`, atlag });
-
-    updateTabla();
+    tanulok.push({ nev, szam, betu, atlag });
+    frissit();
 }
 
-
-function updateTabla() {
-    tbody.innerHTML = "";
-    tanulok.forEach((tanulo) => {
-        tbody.appendChild(megjelenitSor(tanulo));
-    });
+function szerkeszt(i) {
+    szerkesztett = i;
+    frissit();
 }
 
+function ment(i) {
+    const nev = document.getElementById("ujNev").value.trim();
+    const szam = Number(document.getElementById("ujSzam").value);
+    const betu = document.getElementById("ujBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("ujAtlag").value);
 
-updateTabla();
+    if (!ervenyes(nev, szam, betu, atlag)) {
+        alert("Adj meg érvényes adatokat!");
+        return;
+    }
+
+    tanulok[i] = { nev, szam, betu, atlag };
+    szerkesztett = -1;
+    frissit();
+}
+
+function torol(i) {
+    if (confirm("Biztosan törlöd ezt a tanulót: " + tanulok[i].nev + "?")) {
+        tanulok.splice(i, 1);
+        frissit();
+    }
+}
+
+function frissit() {
+    let html = "";
+
+    for (let i = 0; i < tanulok.length; i++) {
+        const t = tanulok[i];
+
+        if (i === szerkesztett) {
+            html += `
+                <tr>
+                    <td><input id="ujNev" value="${t.nev}"></td>
+                    <td>
+                        <input id="ujSzam" type="number" value="${t.szam}">
+                        <input id="ujBetu" maxlength="1" value="${t.betu}">
+                    </td>
+                    <td><input id="ujAtlag" type="number" step="0.1" value="${t.atlag}"></td>
+                    <td><button onclick="ment(${i})">Mentés</button></td>
+                </tr>`;
+        } else {
+            html += `
+                <tr>
+                    <td>${t.nev}</td>
+                    <td>${t.szam}.${t.betu}</td>
+                    <td>${t.atlag}</td>
+                    <td>
+                        <button onclick="szerkeszt(${i})">Módosítás</button>
+                        <button class="torles" onclick="torol(${i})">X</button>
+                    </td>
+                </tr>`;
+        }
+    }
+
+    tbody.innerHTML = html;
+}
+
+frissit();
