@@ -1,96 +1,96 @@
 const tanulok = [
-    { nev: "Kovács Anna",    osztaly: "9.A",  atlag: 4.8 },
-    { nev: "Nagy Péter",     osztaly: "10.B", atlag: 4.2 },
-    { nev: "Szabó Eszter",   osztaly: "11.C", atlag: 3.9 },
-    { nev: "Tóth Bence",     osztaly: "12.A", atlag: 4.5 },
-    { nev: "Horváth Réka",   osztaly: "9.B",  atlag: 5.0 }
+    { nev: "Kovács Anna",  szam: 9,  betu: "A", atlag: 4.8 },
+    { nev: "Nagy Péter",   szam: 10, betu: "B", atlag: 4.2 },
+    { nev: "Szabó Eszter", szam: 11, betu: "C", atlag: 3.9 },
+    { nev: "Tóth Bence",   szam: 12, betu: "A", atlag: 4.5 },
+    { nev: "Horváth Réka", szam: 9,  betu: "B", atlag: 5.0 }
 ];
 
 const tbody = document.getElementById("tanuloTabla");
-const sablon = document.getElementById("sorSablon");
+let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
 
-function megjelenitSor(tanulo) {
-    const sor = document.importNode(sablon.content, true).firstElementChild;
-
-    const osztalySzamMezo = sor.querySelector(".osztaly-szam");
-    const osztalyBetuMezo = sor.querySelector(".osztaly-betu");
-    const atlagMezo = sor.querySelector(".atlag-mezo");
-    const nevMezo = sor.querySelector(".nev-mezo");
-
-    sor.querySelector(".nev-szoveg").textContent = tanulo.nev;
-    sor.querySelector(".osztaly-szoveg").textContent = tanulo.osztaly;
-    sor.querySelector(".atlag-szoveg").textContent = tanulo.atlag;
-
-    osztalyBetuMezo.oninput = function () {
-        this.value = this.value.toUpperCase();
-        if (this.value < "A" || this.value > "Z") {
-            this.value = "";
-        }
-    };
-
-    // Módosítás gomb
-    sor.querySelector(".modositas").onclick = function () {
-        const osztalyReszek = tanulo.osztaly.split(".");
-        nevMezo.value = tanulo.nev;
-        osztalySzamMezo.value = osztalyReszek[0];
-        osztalyBetuMezo.value = osztalyReszek[1];
-        atlagMezo.value = tanulo.atlag;
-
-        sor.classList.add("szerkesztes");
-        nevMezo.focus();
-    };
-
-    // Mentés gomb
-    sor.querySelector(".mentes").onclick = function () {
-        const osztalySzam = Number(osztalySzamMezo.value);
-        const osztalyBetu = osztalyBetuMezo.value;
-        const atlag = Number(atlagMezo.value);
-        const nev = nevMezo.value.trim();
-
-        if (nev === "" || osztalySzamMezo.value === "" || osztalySzam < 1 || osztalySzam > 12 ||
-            osztalyBetu.length !== 1 || osztalyBetu < "A" || osztalyBetu > "Z" ||
-            atlagMezo.value === "" || atlag < 1 || atlag > 5) {
-            alert("Adj meg érvényes osztályt és átlagot!");
-            return;
-        }
-
-    tanulo.nev = nev;
-        tanulo.osztaly = `${osztalySzam}.${osztalyBetu}`;
-        tanulo.atlag = atlag;
-        updateTabla();
-    };
-    // Törlés gomb
-    sor.querySelector(".torles").onclick = function () {
-        if (confirm(`Biztosan törlöd ezt a tanulót: ${tanulo.nev}?`)) {
-            tanulok.splice(tanulok.indexOf(tanulo), 1);
-            updateTabla();
-        }
-    };
-
-    return sor;
+function ervenyes(nev, szam, betu, atlag) {
+    return nev !== ""
+        && szam >= 1 && szam <= 12
+        && /^[A-Z]$/.test(betu)
+        && atlag >= 1 && atlag <= 5;
 }
 
-function adatRogzitese() {
-    const nev = document.getElementById("nev").value;
-    const osztaly = document.getElementById("OsztalySzam").value;
-    const osztalyBetu = document.getElementById("OsztalyBetu").value;
-    const atlag = parseFloat(document.getElementById("atlag").value);
+function hozzaad() {
+    const nev = document.getElementById("nev").value.trim();
+    const szam = Number(document.getElementById("OsztalySzam").value);
+    const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("atlag").value);
 
-    if (nev === "" || osztaly === "" || osztalyBetu === "" || isNaN(atlag)) {
-        alert("Tölts ki minden mezőt!");
+    if (!ervenyes(nev, szam, betu, atlag)) {
+        alert("Tölts ki minden mezőt helyesen!");
         return;
     }
 
-    tanulok.push({ nev, osztaly: `${osztaly}.${osztalyBetu}`, atlag });
-
-    updateTabla();
+    tanulok.push({ nev, szam, betu, atlag });
+    frissit();
 }
 
-function updateTabla() {
-    tbody.innerHTML = "";
-    tanulok.forEach((tanulo) => {
-        tbody.appendChild(megjelenitSor(tanulo));
-    });
+function szerkeszt(i) {
+    szerkesztett = i;
+    frissit();
 }
 
-updateTabla();
+function ment(i) {
+    const nev = document.getElementById("ujNev").value.trim();
+    const szam = Number(document.getElementById("ujSzam").value);
+    const betu = document.getElementById("ujBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("ujAtlag").value);
+
+    if (!ervenyes(nev, szam, betu, atlag)) {
+        alert("Adj meg érvényes adatokat!");
+        return;
+    }
+
+    tanulok[i] = { nev, szam, betu, atlag };
+    szerkesztett = -1;
+    frissit();
+}
+
+function torol(i) {
+    if (confirm("Biztosan törlöd ezt a tanulót: " + tanulok[i].nev + "?")) {
+        tanulok.splice(i, 1);
+        frissit();
+    }
+}
+
+function frissit() {
+    let html = "";
+
+    for (let i = 0; i < tanulok.length; i++) {
+        const t = tanulok[i];
+
+        if (i === szerkesztett) {
+            html += `
+                <tr>
+                    <td><input id="ujNev" value="${t.nev}"></td>
+                    <td>
+                        <input id="ujSzam" type="number" value="${t.szam}">
+                        <input id="ujBetu" maxlength="1" value="${t.betu}">
+                    </td>
+                    <td><input id="ujAtlag" type="number" step="0.1" value="${t.atlag}"></td>
+                    <td><button onclick="ment(${i})">Mentés</button></td>
+                </tr>`;
+        } else {
+            html += `
+                <tr>
+                    <td>${t.nev}</td>
+                    <td>${t.szam}.${t.betu}</td>
+                    <td>${t.atlag}</td>
+                    <td>
+                        <button onclick="szerkeszt(${i})">Módosítás</button>
+                        <button class="torles" onclick="torol(${i})">X</button>
+                    </td>
+                </tr>`;
+        }
+    }
+
+    tbody.innerHTML = html;
+}
+
+frissit();

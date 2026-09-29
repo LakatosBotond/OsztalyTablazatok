@@ -9,60 +9,29 @@
 <body>
     <main>
         <h1>Tanulók</h1>
-
-        <h2 id="tanulokCim">Tanuló hozzáadása:</h2>
+        <h2>Tanuló hozzáadása:</h2>
 
         <div id="tanulok">
             <input type="text" id="nev" placeholder="Név">
             <input type="number" id="OsztalySzam" placeholder="1-12" min="1" max="12">
             <input type="text" id="OsztalyBetu" placeholder="A-Z" maxlength="1">
             <input type="number" id="atlag" placeholder="Átlag" min="1" max="5" step="0.01">
-            <button id="hozzaad" onclick="adatRogzitese()">Hozzáadás</button>
+            <button onclick="hozzaad()">Hozzáadás</button>
         </div>
 
-        <div class="tablakeret">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Név</th>
-                        <th>Osztály</th>
-                        <th>Átlag</th>
-                        <th>Műveletek</th>
-                    </tr>
-                </thead>
-                <tbody id="tanuloTabla"></tbody>
-            </table>
-        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Név</th>
+                    <th>Osztály</th>
+                    <th>Átlag</th>
+                    <th>Műveletek</th>
+                </tr>
+            </thead>
+            <tbody id="tanuloTabla"></tbody>
+        </table>
     </main>
-
-    <template id="sorSablon">
-        <tr>
-            <td>
-                <span class="megjelenit nev-szoveg"></span>
-                <input type="text" class="szerkeszto nev-mezo" aria-label="Név" required>
-            </td>
-
-            <td>
-                <span class="megjelenit osztaly-szoveg"></span>
-                <div class="szerkeszto osztaly-szerkeszto">
-                    <input type="number" class="osztaly-szam" aria-label="Osztály száma" min="1" max="12" required>
-                    <input type="text" class="osztaly-betu" aria-label="Osztály betűjele" maxlength="1" required>
-                </div>
-            </td>
-
-            <td class="atlag">
-                <span class="megjelenit atlag-szoveg"></span>
-                <input type="number" class="szerkeszto atlag-mezo" aria-label="Átlag" min="1" max="5" step="0.1" required>
-            </td>
-
-            <td>
-                <button type="button" class="modositas-gomb megjelenit modositas">Módosítás</button>
-                <button type="button" class="modositas-gomb szerkeszto mentes">Mentés</button>
-                <button type="button" class="torles-gomb megjelenit torles" aria-label="Törlés">X</button>
-            </td>
-        </tr>
-    </template>
 
     <script src="main.js"></script>
 </body>
-</html>
+</html>     

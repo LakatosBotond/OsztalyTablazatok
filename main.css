@@ -11,7 +11,7 @@ main {
     margin: 0 auto;
 }
 
-h1, #tanulokCim {
+h1, h2 {
     text-align: center;
 }
 
@@ -23,10 +23,14 @@ h1, #tanulokCim {
     margin-bottom: 24px;
 }
 
-#tanulok input {
+input {
     padding: 8px;
     border: 1px solid #b8c0cc;
     border-radius: 4px;
+    font: inherit;
+}
+
+#tanulok input {
     width: 110px;
 }
 
@@ -34,17 +38,19 @@ h1, #tanulokCim {
     width: 200px;
 }
 
-#tanulok button {
-    padding: 8px 16px;
+button {
+    padding: 8px 12px;
     border: none;
     border-radius: 4px;
     background: #1f3a5f;
     color: #fff;
+    font: inherit;
     cursor: pointer;
 }
 
-.tablakeret {
-    overflow-x: auto;
+button.torles {
+    background: #c62828;
+    font-weight: bold;
 }
 
 table {
@@ -64,113 +70,10 @@ thead th {
     color: #fff;
 }
 
-tbody tr:hover {
-    background: #eef3f9;
-}
-
-td.atlag {
-    font-variant-numeric: tabular-nums;
-}
-
-
-.szerkeszto {
-    display: none;
-}
-
-
-tr.szerkesztes .megjelenit {
-    display: none;
-}
-
-tr.szerkesztes input.szerkeszto,
-tr.szerkesztes button.szerkeszto {
-    display: inline-block;
-}
-
-tr.szerkesztes .osztaly-szerkeszto {
-    display: flex;
-    gap: 6px;
-    min-width: 0;
-}
-
-/* --- Gombok --- */
-
-.modositas-gomb {
-    min-height: 36px;
-    padding: 8px 12px;
-    border: 1px solid #1f3a5f;
-    border-radius: 3px;
-    background: #1f3a5f;
-    color: #fff;
-    font: inherit;
-    cursor: pointer;
-}
-
-.modositas-gomb:hover {
-    background: #162b47;
-}
-
-.modositas-gomb:focus-visible,
-td input:focus-visible {
-    outline: 2px solid #4b79a8;
-    outline-offset: 2px;
-}
-
-
 td input {
-    box-sizing: border-box;
-    min-height: 36px;
-    padding: 7px 9px;
-    border: 1px solid #aebdce;
-    border-radius: 3px;
-    background: #fff;
-    color: #1d2733;
-    font: inherit;
-}
-
-td input[type="text"] {
-    width: 100%;
-    min-width: 72px;
-}
-
-td input[type="number"] {
-    width: 92px;
-}
-
-td .osztaly-szerkeszto input[type="number"] {
-    flex: 0 0 82px;
-    min-width: 82px;
     width: 70px;
 }
 
-td .osztaly-szerkeszto input[type="text"] {
-    flex: 0 1 48px;
-    min-width: 32px;
-    width: 48px;
-}
-
-td input:hover {
-    border-color: #1f3a5f;
-}
-
-.torles-gomb {
-    min-height: 36px;
-    padding: 8px 12px;
-    margin-left: 6px;
-    border: 1px solid #c62828;
-    border-radius: 10px;
-    background: #c62828;
-    color: #fff;
-    font: inherit;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.torles-gomb:hover {
-    background: #a31f1f;
-}
-
-.torles-gomb:focus-visible {
-    outline: 2px solid #4b79a8;
-    outline-offset: 2px;
+td input:first-child {
+    width: 140px;
 }
