@@ -73,7 +73,3 @@ thead th {
 td input {
     width: 70px;
 }
-
-td input:first-child {
-    width: 140px;
-}
