@@ -6,65 +6,58 @@ const tanulok = [
     { nev: "Horváth Réka",   osztaly: "9.B",  atlag: 5.0 }
 ];
 
-
 const tbody = document.getElementById("tanuloTabla");
+const sablon = document.getElementById("sorSablon");
 
 function megjelenitSor(tanulo) {
-    const sor = document.createElement("tr");
+    const sor = document.importNode(sablon.content, true).firstElementChild;
 
-    sor.innerHTML = `
-        <td>${tanulo.nev}</td>
-        <td>${tanulo.osztaly}</td>
-        <td class="atlag">${tanulo.atlag}</td>
-        <td><button type="button" class="modositas-gomb">Módosítás</button></td>
-    `;
+    const osztalySzamMezo = sor.querySelector(".osztaly-szam");
+    const osztalyBetuMezo = sor.querySelector(".osztaly-betu");
+    const atlagMezo = sor.querySelector(".atlag-mezo");
 
-    const modositasGomb = sor.cells[3].getElementsByTagName("button")[0];
+    sor.querySelector(".nev").textContent = tanulo.nev;
+    sor.querySelector(".osztaly-szoveg").textContent = tanulo.osztaly;
+    sor.querySelector(".atlag-szoveg").textContent = tanulo.atlag;
 
-    modositasGomb.onclick = function () {
+    osztalyBetuMezo.oninput = function () {
+        this.value = this.value.toUpperCase();
+        if (this.value < "A" || this.value > "Z") {
+            this.value = "";
+        }
+    };
+
+    // Módosítás gomb
+    sor.querySelector(".modositas").onclick = function () {
         const osztalyReszek = tanulo.osztaly.split(".");
-        sor.cells[1].innerHTML = `
-            <div class="osztaly-szerkeszto">
-                <input type="number" aria-label="Osztály száma" min="1" max="12" value="${osztalyReszek[0]}" required>
-                <input type="text" aria-label="Osztály betűjele" maxlength="1" value="${osztalyReszek[1]}" required>
-            </div>
-        `;
-        sor.cells[2].innerHTML = `<input type="number" aria-label="Átlag" min="1" max="5" step="0.1" value="${tanulo.atlag}" required>`;
+        osztalySzamMezo.value = osztalyReszek[0];
+        osztalyBetuMezo.value = osztalyReszek[1];
+        atlagMezo.value = tanulo.atlag;
 
-        const osztalyMezok = sor.cells[1].getElementsByTagName("input");
-        const atlagMezo = sor.cells[2].getElementsByTagName("input")[0];
+        sor.classList.add("szerkesztes");
+        osztalySzamMezo.focus();
+    };
 
-        osztalyMezok[1].oninput = function () {
-            this.value = this.value.toUpperCase();
-            if (this.value < "A" || this.value > "Z") {
-                this.value = "";
-            }
-        };
+    // Mentés gomb
+    sor.querySelector(".mentes").onclick = function () {
+        const osztalySzam = Number(osztalySzamMezo.value);
+        const osztalyBetu = osztalyBetuMezo.value;
+        const atlag = Number(atlagMezo.value);
 
-        modositasGomb.textContent = "Mentés";
-        modositasGomb.onclick = function () {
-            const osztalySzam = Number(osztalyMezok[0].value);
-            const osztalyBetu = osztalyMezok[1].value;
-            const atlag = Number(atlagMezo.value);
+        if (osztalySzamMezo.value === "" || osztalySzam < 1 || osztalySzam > 12 ||
+            osztalyBetu.length !== 1 || osztalyBetu < "A" || osztalyBetu > "Z" ||
+            atlagMezo.value === "" || atlag < 1 || atlag > 5) {
+            alert("Adj meg érvényes osztályt és átlagot!");
+            return;
+        }
 
-            if (osztalyMezok[0].value === "" || osztalySzam < 1 || osztalySzam > 12 ||
-                osztalyBetu.length !== 1 || osztalyBetu < "A" || osztalyBetu > "Z" ||
-                atlagMezo.value === "" || atlag < 1 || atlag > 5) {
-                alert("Adj meg érvényes osztályt és átlagot!");
-                return;
-            }
-
-            tanulo.osztaly = `${osztalySzam}.${osztalyBetu}`;
-            tanulo.atlag = atlag;
-            updateTabla();
-        };
-
-        osztalyMezok[0].focus();
+        tanulo.osztaly = `${osztalySzam}.${osztalyBetu}`;
+        tanulo.atlag = atlag;
+        updateTabla();
     };
 
     return sor;
 }
-
 
 function adatRogzitese() {
     const nev = document.getElementById("nev").value;
@@ -82,13 +75,11 @@ function adatRogzitese() {
     updateTabla();
 }
 
-
 function updateTabla() {
     tbody.innerHTML = "";
     tanulok.forEach((tanulo) => {
         tbody.appendChild(megjelenitSor(tanulo));
     });
 }
-
 
 updateTabla();

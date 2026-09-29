@@ -72,6 +72,29 @@ td.atlag {
     font-variant-numeric: tabular-nums;
 }
 
+
+.szerkeszto {
+    display: none;
+}
+
+
+tr.szerkesztes .megjelenit {
+    display: none;
+}
+
+tr.szerkesztes input.szerkeszto,
+tr.szerkesztes button.szerkeszto {
+    display: inline-block;
+}
+
+tr.szerkesztes .osztaly-szerkeszto {
+    display: flex;
+    gap: 6px;
+    min-width: 0;
+}
+
+/* --- Gombok --- */
+
 .modositas-gomb {
     min-height: 36px;
     padding: 8px 12px;
@@ -93,6 +116,7 @@ td input:focus-visible {
     outline-offset: 2px;
 }
 
+
 td input {
     box-sizing: border-box;
     min-height: 36px;
@@ -109,10 +133,8 @@ td input[type="text"] {
     min-width: 72px;
 }
 
-td .osztaly-szerkeszto {
-    display: flex;
-    gap: 6px;
-    min-width: 0;
+td input[type="number"] {
+    width: 92px;
 }
 
 td .osztaly-szerkeszto input[type="number"] {
@@ -125,10 +147,6 @@ td .osztaly-szerkeszto input[type="text"] {
     flex: 0 1 48px;
     min-width: 32px;
     width: 48px;
-}
-
-td input[type="number"] {
-    width: 92px;
 }
 
 td input:hover {
