@@ -109,6 +109,24 @@ td input[type="text"] {
     min-width: 72px;
 }
 
+td .osztaly-szerkeszto {
+    display: flex;
+    gap: 6px;
+    min-width: 0;
+}
+
+td .osztaly-szerkeszto input[type="number"] {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 0;
+}
+
+td .osztaly-szerkeszto input[type="text"] {
+    flex: 0 1 48px;
+    min-width: 32px;
+    width: 48px;
+}
+
 td input[type="number"] {
     width: 92px;
 }
