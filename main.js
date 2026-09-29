@@ -15,8 +15,9 @@ function megjelenitSor(tanulo) {
     const osztalySzamMezo = sor.querySelector(".osztaly-szam");
     const osztalyBetuMezo = sor.querySelector(".osztaly-betu");
     const atlagMezo = sor.querySelector(".atlag-mezo");
+    const nevMezo = sor.querySelector(".nev-mezo");
 
-    sor.querySelector(".nev").textContent = tanulo.nev;
+    sor.querySelector(".nev-szoveg").textContent = tanulo.nev;
     sor.querySelector(".osztaly-szoveg").textContent = tanulo.osztaly;
     sor.querySelector(".atlag-szoveg").textContent = tanulo.atlag;
 
@@ -30,12 +31,13 @@ function megjelenitSor(tanulo) {
     // Módosítás gomb
     sor.querySelector(".modositas").onclick = function () {
         const osztalyReszek = tanulo.osztaly.split(".");
+        nevMezo.value = tanulo.nev;
         osztalySzamMezo.value = osztalyReszek[0];
         osztalyBetuMezo.value = osztalyReszek[1];
         atlagMezo.value = tanulo.atlag;
 
         sor.classList.add("szerkesztes");
-        osztalySzamMezo.focus();
+        nevMezo.focus();
     };
 
     // Mentés gomb
@@ -43,14 +45,16 @@ function megjelenitSor(tanulo) {
         const osztalySzam = Number(osztalySzamMezo.value);
         const osztalyBetu = osztalyBetuMezo.value;
         const atlag = Number(atlagMezo.value);
+        const nev = nevMezo.value.trim();
 
-        if (osztalySzamMezo.value === "" || osztalySzam < 1 || osztalySzam > 12 ||
+        if (nev === "" || osztalySzamMezo.value === "" || osztalySzam < 1 || osztalySzam > 12 ||
             osztalyBetu.length !== 1 || osztalyBetu < "A" || osztalyBetu > "Z" ||
             atlagMezo.value === "" || atlag < 1 || atlag > 5) {
             alert("Adj meg érvényes osztályt és átlagot!");
             return;
         }
 
+    tanulo.nev = nev;
         tanulo.osztaly = `${osztalySzam}.${osztalyBetu}`;
         tanulo.atlag = atlag;
         updateTabla();
