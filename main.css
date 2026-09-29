@@ -138,9 +138,9 @@ td input[type="number"] {
 }
 
 td .osztaly-szerkeszto input[type="number"] {
-    flex: 1 1 0;
-    min-width: 0;
-    width: 0;
+    flex: 0 0 82px;
+    min-width: 82px;
+    width: 70px;
 }
 
 td .osztaly-szerkeszto input[type="text"] {
