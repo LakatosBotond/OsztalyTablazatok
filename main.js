@@ -7,7 +7,14 @@ const tanulok = [
 ];
 
 const tbody = document.getElementById("tanuloTabla");
+const kereses = document.getElementById("tanuloKereses");
+const keresesiEredmenyTabla = document.getElementById("keresesiEredmenyTabla");
+const keresesiTalalatok = document.getElementById("keresesiTalalatok");
 let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
+
+function keresesiForma(szoveg) {
+    return szoveg.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("hu");
+}
 
 function ervenyes(nev, szam, betu, atlag) {
     return nev !== ""
@@ -91,6 +98,28 @@ function frissit() {
     }
 
     tbody.innerHTML = html;
+    frissitKeresest();
 }
 
+function frissitKeresest() {
+    const keresettNev = keresesiForma(kereses.value.trim());
+    keresesiEredmenyTabla.hidden = keresettNev === "";
+
+    if (keresettNev === "") {
+        keresesiTalalatok.innerHTML = "";
+        return;
+    }
+
+    const talalatok = tanulok.filter(t => keresesiForma(t.nev).includes(keresettNev));
+    keresesiTalalatok.innerHTML = talalatok.length
+        ? talalatok.map(t => `
+            <tr>
+                <td>${t.nev}</td>
+                <td>${t.szam}.${t.betu}</td>
+                <td>${t.atlag}</td>
+            </tr>`).join("")
+        : '<tr><td colspan="3">Nincs találat.</td></tr>';
+}
+
+kereses.addEventListener("input", frissitKeresest);
 frissit();
