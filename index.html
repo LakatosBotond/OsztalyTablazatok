@@ -31,9 +31,6 @@
             <tbody id="tanuloTabla"></tbody>
         </table>
 
-
-
-
         <label class="kereses" for="tanuloKereses">
             Keresés név alapján
             <input type="search" id="tanuloKereses" placeholder="Tanuló neve">
@@ -50,37 +47,32 @@
             <tbody id="keresesiTalalatok"></tbody>
         </table>
 
-
         <div id="statisztikak">
-    <div id="tanulokStatisztikak">
-        <h3>Statisztikák:</h3>
-        <div>
-            <p id="tanulokSzama" class="stats1"></p>
-            <p id="OsszAtlag" class="stats"></p>
-            <p id="legjobbTanulo" class="stats"></p>
+            <div id="tanulokStatisztikak">
+                <h3>Statisztikák:</h3>
+                <p id="tanulokSzama" class="stats"></p>
+                <p id="OsszAtlag" class="stats"></p>
+                <p id="legjobbTanulo" class="stats"></p>
+            </div>
+
+            <div id="jegyStatisztikak">
+                <h3>Jegystatisztikák:</h3>
+                <p id="jeles" class="stats"></p>
+                <p id="jo" class="stats"></p>
+                <p id="kozepes" class="stats"></p>
+                <p id="elegseges" class="stats"></p>
+                <p id="elegtelen" class="stats"></p>
+            </div>
         </div>
-    </div>
 
-    <div id="jegyStatisztikak">
-        <h3>Jegystatisztikák:</h3>
-        <div>
-            <p id="jeles" class="stats"></p>
-            <p id="jo" class="stats"></p>
-            <p id="kozepes" class="stats"></p>
-            <p id="elegseges" class="stats"></p>
-            <p id="elegtelen" class="stats"></p>
+        <div id="muveletek">
+            <button onclick="rendezAtlag()">Rendezés átlag szerint</button>
+            <button onclick="rendezNev()">Rendezés név szerint</button>
+            <button id="szuroGomb" onclick="szuroValt()">Csak a jeles tanulók</button>
+            <button id="kiemelesGomb" onclick="kiemelesValt()">Színes kiemelés</button>
         </div>
-    </div>
-
-    <div id="muveletek">
-        <button onclick="rendezAtlag()">Rendezés átlag szerint</button>
-        <button onclick="rendezNev()">Rendezés név szerint</button>
-        <button id="szuroGomb" onclick="szuroValt()">Csak a jeles tanulók</button>
-        <button id="kiemelesGomb" onclick="kiemelesValt()">Színes kiemelés</button>
-    </div>
-
     </main>
 
     <script src="main.js"></script>
 </body>
-</html>     
+</html>
