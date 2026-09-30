@@ -24,18 +24,27 @@ function ervenyes(nev, szam, betu, atlag) {
 }
 
 function hozzaad() {
-    const nev = document.getElementById("nev").value.trim();
-    const szam = Number(document.getElementById("OsztalySzam").value);
-    const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
-    const atlag = Number(document.getElementById("atlag").value);
+    try {
+        const nev = document.getElementById("nev").value.trim();
+        const szam = Number(document.getElementById("OsztalySzam").value);
+        const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
+        const atlag = Number(document.getElementById("atlag").value);
 
-    if (!ervenyes(nev, szam, betu, atlag)) {
-        alert("Tölts ki minden mezőt helyesen!");
-        return;
+        if (nev === "") {
+            throw new Error("Érvényes nevet adj meg!");
+        } else if (szam < 1 || szam > 12) {
+            throw new Error("Az osztály számának 1 és 12 között kell lennie!");
+        } else if (!/^[A-Z]$/.test(betu)) {
+            throw new Error("Az osztály betűje A és Z között legyen!");
+        } else if (atlag < 1 || atlag > 5) {
+            throw new Error("Az átlagnak 1 és 5 között kell lennie!");
+        }
+
+        tanulok.push({ nev, szam, betu, atlag });
+        frissit();
+    } catch (hiba) {
+        alert(hiba.message);
     }
-
-    tanulok.push({ nev, szam, betu, atlag });
-    frissit();
 }
 
 function szerkeszt(i) {
@@ -44,18 +53,28 @@ function szerkeszt(i) {
 }
 
 function ment(i) {
-    const nev = document.getElementById("ujNev").value.trim();
-    const szam = Number(document.getElementById("ujSzam").value);
-    const betu = document.getElementById("ujBetu").value.toUpperCase();
-    const atlag = Number(document.getElementById("ujAtlag").value);
-
-    if (!ervenyes(nev, szam, betu, atlag)) {
-        alert("Adj meg érvényes adatokat!");
-        return;
+    try{
+        const nev = document.getElementById("ujNev").value.trim();
+        const szam = Number(document.getElementById("ujSzam").value);
+        const betu = document.getElementById("ujBetu").value.toUpperCase();
+        const atlag = Number(document.getElementById("ujAtlag").value);
+    
+        if (nev === "") {
+            throw new Error("Érvényes nevet adj meg!");
+        } else if (szam < 1 || szam > 12) {
+            throw new Error("Az osztály számának 1 és 12 között kell lennie!");
+        } else if (!/^[A-Z]$/.test(betu)) {
+            throw new Error("Az osztály betűje A és Z között legyen!");
+        } else if (atlag < 1 || atlag > 5) {
+            throw new Error("Az átlagnak 1 és 5 között kell lennie!");
+        }
+    
+        tanulok[i] = { nev, szam, betu, atlag };
+        szerkesztett = -1;
     }
-
-    tanulok[i] = { nev, szam, betu, atlag };
-    szerkesztett = -1;
+    catch (e) {
+        alert(e.message);
+    }
     frissit();
 }
 
