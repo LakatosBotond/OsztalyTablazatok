@@ -13,7 +13,7 @@ const keresesiTalalatok = document.getElementById("keresesiTalalatok");
 let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
 
 function keresesiForma(szoveg) {
-    return szoveg.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("hu");
+    return szoveg.toLocaleLowerCase("hu");
 }
 
 function ervenyes(nev, szam, betu, atlag) {
