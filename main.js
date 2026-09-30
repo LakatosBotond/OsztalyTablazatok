@@ -101,6 +101,34 @@ function statisztika() {
         "Legjobb tanuló: " + legjobb.nev + " (" + legjobb.atlag + ")";
 }
 
+function jegyStatisztika() {
+    let jeles = 0;
+    let jo = 0;
+    let kozepes = 0;
+    let elegseges = 0;
+    let elegtelen = 0;
+
+    for (const t of tanulok) {
+        if (t.atlag >= 4.5) {
+            jeles++;
+        } else if (t.atlag >= 3.5) {
+            jo++;
+        } else if (t.atlag >= 2.5) {
+            kozepes++;
+        } else if (t.atlag >= 2) {
+            elegseges++;
+        } else {
+            elegtelen++;
+        }
+    }
+
+    document.getElementById("jeles").textContent = "Jeles: " + jeles + " fő";
+    document.getElementById("jo").textContent = "Jó: " + jo + " fő";
+    document.getElementById("kozepes").textContent = "Közepes: " + kozepes + " fő";
+    document.getElementById("elegseges").textContent = "Elégséges: " + elegseges + " fő";
+    document.getElementById("elegtelen").textContent = "Elégtelen: " + elegtelen + " fő";
+}
+
 function frissit() {
     let html = "";
 
@@ -136,6 +164,7 @@ function frissit() {
 
     statisztika();
     frissitKeresest();
+    jegyStatisztika();
 }
 
 function frissitKeresest() {

@@ -100,3 +100,9 @@ td input {
     margin: 22px 8px; 
     margin-top: 20px;
 }
+
+#statisztikak {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
