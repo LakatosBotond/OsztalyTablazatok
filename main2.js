@@ -7,7 +7,7 @@ const tanulok = [
 ];
 
 const tbody = document.getElementById("tanuloTabla");
-let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
+let szerkesztett = -1;
 
 function ervenyes(nev, szam, betu, atlag) {
     return nev !== ""

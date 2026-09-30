@@ -7,7 +7,7 @@ const tanulok = [
 ];
 
 const tbody = document.getElementById("tanuloTabla");
-let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
+let szerkesztett = -1; 
 
 function ervenyes(nev, szam, betu, atlag) {
     return nev !== ""
@@ -59,6 +59,41 @@ function torol(i) {
     }
 }
 
+function statisztika() {
+    const darab = tanulok.length;
+
+    document.getElementById("tanulokSzama").textContent =
+        "Tanulók száma: " + darab;
+
+    if (darab === 0) {
+        document.getElementById("OsszAtlag").textContent = "Összátlag: -";
+        document.getElementById("legjobbTanulo").textContent = "Legjobb tanuló: -";
+        return;
+    }
+
+    let osszeg = 0;
+
+    for (let i = 0; i < tanulok.length; i++) {
+        osszeg += tanulok[i].atlag;
+    }
+    
+    const atlag = osszeg / darab;
+
+    let legjobb = tanulok[0];
+
+    for (let i = 1; i < tanulok.length; i++) {
+        if (tanulok[i].atlag > legjobb.atlag) {
+            legjobb = tanulok[i];
+        }
+    }
+
+    document.getElementById("OsszAtlag").textContent =
+        "Összátlag: " + atlag.toFixed(2);
+
+    document.getElementById("legjobbTanulo").textContent =
+        "Legjobb tanuló: " + legjobb.nev + " (" + legjobb.atlag + ")";
+}
+
 function frissit() {
     let html = "";
 
@@ -91,6 +126,13 @@ function frissit() {
     }
 
     tbody.innerHTML = html;
+
+    statisztika();
 }
+
+
+
+
+
 
 frissit();

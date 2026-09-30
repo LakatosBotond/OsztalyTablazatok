@@ -73,3 +73,18 @@ thead th {
 td input {
     width: 70px;
 }
+
+#tanulokStatisztikak {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+.stats{
+    margin: 22px 8px; 
+}
+.stats1{
+    margin: 22px 8px; 
+    margin-top: 20px;
+}
