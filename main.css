@@ -34,6 +34,18 @@ input {
     width: 110px;
 }
 
+.kereses {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+#tanuloKereses {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 #nev {
     width: 200px;
 }
