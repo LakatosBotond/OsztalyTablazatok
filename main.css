@@ -106,3 +106,23 @@ td input {
     gap: 40px;
     align-items: flex-start;
 }
+
+#muveletek {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+tr.jeles td {
+    background-color: #c8f7c5;
+}
+
+tr.elegtelen td {
+    background-color: #f7c5c5;
+}
+
+#muveletek button.aktiv {
+    background-color: #4a90d9;
+    color: white;
+}
