@@ -10,7 +10,9 @@ const tbody = document.getElementById("tanuloTabla");
 const kereses = document.getElementById("tanuloKereses");
 const keresesiEredmenyTabla = document.getElementById("keresesiEredmenyTabla");
 const keresesiTalalatok = document.getElementById("keresesiTalalatok");
-let szerkesztett = -1; // melyik sor van szerkesztés alatt (-1 = egyik sem)
+let szerkesztett = -1; 
+let csakJeles = false;
+let kiemeles = false;
 
 function keresesiForma(szoveg) {
     return szoveg.toLocaleLowerCase("hu");
@@ -45,6 +47,15 @@ function hozzaad() {
     } catch (hiba) {
         alert(hiba.message);
     }
+
+    tanulok.push({ nev, szam, betu, atlag });
+
+     if (csakJeles && atlag < 4.5) {
+        csakJeles = false;
+        gombokFrissit();
+    }
+
+    frissit();
 }
 
 function szerkeszt(i) {
@@ -75,6 +86,15 @@ function ment(i) {
     catch (e) {
         alert(e.message);
     }
+
+    tanulok[i] = { nev, szam, betu, atlag };
+    szerkesztett = -1;
+
+     if (csakJeles && atlag < 4.5) {
+        csakJeles = false;
+        gombokFrissit();
+    }
+
     frissit();
 }
 
@@ -148,15 +168,67 @@ function jegyStatisztika() {
     document.getElementById("elegtelen").textContent = "Elégtelen: " + elegtelen + " fő";
 }
 
+function rendezAtlag() {
+    tanulok.sort((a, b) => b.atlag - a.atlag);
+    szerkesztett = -1;
+    frissit();
+}
+
+function rendezNev() {
+    tanulok.sort((a, b) => a.nev.localeCompare(b.nev, "hu"));
+    szerkesztett = -1;
+    frissit();
+}
+
+function gombokFrissit() {
+    const szuroGomb = document.getElementById("szuroGomb");
+    const kiemelesGomb = document.getElementById("kiemelesGomb");
+
+    szuroGomb.classList.toggle("aktiv", csakJeles);
+    kiemelesGomb.classList.toggle("aktiv", kiemeles);
+
+    if (csakJeles) {
+        szuroGomb.textContent = "Mindenki megjelenítése";
+    } else {
+        szuroGomb.textContent = "Csak a jeles tanulók";
+    }
+}
+
+function szuroValt() {
+    csakJeles = !csakJeles;
+    szerkesztett = -1;
+    gombokFrissit();
+    frissit();
+}
+
+function kiemelesValt() {
+    kiemeles = !kiemeles;
+    gombokFrissit();
+    frissit();
+}
+
 function frissit() {
     let html = "";
 
     for (let i = 0; i < tanulok.length; i++) {
         const t = tanulok[i];
 
+        if (csakJeles && t.atlag < 4.5) {
+            continue;
+        }
+
+        let osztaly = "";
+        if (kiemeles) {
+            if (t.atlag >= 4.5) {
+                osztaly = "jeles";
+            } else if (t.atlag < 2) {
+                osztaly = "elegtelen";
+            }
+        }
+
         if (i === szerkesztett) {
             html += `
-                <tr>
+                <tr class="${osztaly}">
                     <td><input id="ujNev" value="${t.nev}"></td>
                     <td>
                         <input id="ujSzam" type="number" value="${t.szam}">
@@ -167,7 +239,7 @@ function frissit() {
                 </tr>`;
         } else {
             html += `
-                <tr>
+                <tr class="${osztaly}">
                     <td>${t.nev}</td>
                     <td>${t.szam}.${t.betu}</td>
                     <td>${t.atlag}</td>
@@ -184,6 +256,7 @@ function frissit() {
     statisztika();
     frissitKeresest();
     jegyStatisztika();
+
 }
 
 function frissitKeresest() {
