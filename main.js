@@ -18,19 +18,12 @@ function keresesiForma(szoveg) {
     return szoveg.toLocaleLowerCase("hu");
 }
 
-function ervenyes(nev, szam, betu, atlag) {
-    return nev !== ""
-        && szam >= 1 && szam <= 12
-        && /^[A-Z]$/.test(betu)
-        && atlag >= 1 && atlag <= 5;
-}
-
 function hozzaad() {
+    const nev = document.getElementById("nev").value.trim();
+    const szam = Number(document.getElementById("OsztalySzam").value);
+    const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("atlag").value);
     try {
-        const nev = document.getElementById("nev").value.trim();
-        const szam = Number(document.getElementById("OsztalySzam").value);
-        const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
-        const atlag = Number(document.getElementById("atlag").value);
 
         if (nev === "") {
             throw new Error("Érvényes nevet adj meg!");
@@ -43,19 +36,16 @@ function hozzaad() {
         }
 
         tanulok.push({ nev, szam, betu, atlag });
+        if (csakJeles && atlag < 4.5) {
+            csakJeles = false;
+            gombokFrissit();
+        }
         frissit();
     } catch (hiba) {
         alert(hiba.message);
     }
 
-    tanulok.push({ nev, szam, betu, atlag });
 
-     if (csakJeles && atlag < 4.5) {
-        csakJeles = false;
-        gombokFrissit();
-    }
-
-    frissit();
 }
 
 function szerkeszt(i) {
@@ -64,11 +54,11 @@ function szerkeszt(i) {
 }
 
 function ment(i) {
+    const nev = document.getElementById("ujNev").value.trim();
+    const szam = Number(document.getElementById("ujSzam").value);
+    const betu = document.getElementById("ujBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("ujAtlag").value);
     try{
-        const nev = document.getElementById("ujNev").value.trim();
-        const szam = Number(document.getElementById("ujSzam").value);
-        const betu = document.getElementById("ujBetu").value.toUpperCase();
-        const atlag = Number(document.getElementById("ujAtlag").value);
     
         if (nev === "") {
             throw new Error("Érvényes nevet adj meg!");
@@ -82,20 +72,17 @@ function ment(i) {
     
         tanulok[i] = { nev, szam, betu, atlag };
         szerkesztett = -1;
+        if (csakJeles && atlag < 4.5) {
+           csakJeles = false;
+           gombokFrissit();
+       }
+        frissit();
     }
     catch (e) {
         alert(e.message);
     }
 
-    tanulok[i] = { nev, szam, betu, atlag };
-    szerkesztett = -1;
 
-     if (csakJeles && atlag < 4.5) {
-        csakJeles = false;
-        gombokFrissit();
-    }
-
-    frissit();
 }
 
 function torol(i) {
