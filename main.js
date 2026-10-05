@@ -26,7 +26,7 @@ function hozzaad() {
     const atlag = Number(document.getElementById("atlag").value);
     try {
 
-        if (nev === "") {
+        if (nev === "" || !Number.isNaN(Number(nev))) {
             throw new Error("Érvényes nevet adj meg!");
         } else if (szam < 1 || szam > 12) {
             throw new Error("Az osztály számának 1 és 12 között kell lennie!");
@@ -61,7 +61,7 @@ function ment(i) {
     const atlag = Number(document.getElementById("ujAtlag").value);
     try{
     
-        if (nev === "") {
+        if (nev === "" || !Number.isNaN(Number(nev))) {
             throw new Error("Érvényes nevet adj meg!");
         } else if (szam < 1 || szam > 12) {
             throw new Error("Az osztály számának 1 és 12 között kell lennie!");
