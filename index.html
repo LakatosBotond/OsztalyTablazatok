@@ -14,7 +14,7 @@
         <div id="tanulok">
             <input type="text" id="nev" placeholder="Név">
             <input type="number" id="OsztalySzam" placeholder="1-12" min="1" max="12">
-            <input type="text" id="OsztalyBetu" placeholder="A-Z" maxlength="1">
+            <input type="text" id="OsztalyBetu" placeholder="A-E" maxlength="1">
             <input type="number" id="atlag" placeholder="Átlag" min="1" max="5" step="0.01">
             <button onclick="hozzaad()">Hozzáadás</button>
         </div>
@@ -53,6 +53,11 @@
                 <p id="tanulokSzama" class="stats"></p>
                 <p id="OsszAtlag" class="stats"></p>
                 <p id="legjobbTanulo" class="stats"></p>
+            </div>
+
+            <div id="osztalyStatisztikak">
+                <h3>Osztály átlagok:</h3>
+                <div id="osztalyAtlagok"></div>
             </div>
 
             <div id="jegyStatisztikak">

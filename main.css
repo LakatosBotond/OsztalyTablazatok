@@ -28,7 +28,6 @@ h1, h2 {
 h1 { color: var(--kek); font-size: 2rem; }
 h2 { font-size: 1.05rem; font-weight: 600; color: #5a6675; }
 
-/* Beviteli mezők */
 input {
     padding: 9px 10px;
     border: 1px solid #b8c0cc;
@@ -113,11 +112,9 @@ tbody tr:not(.jeles):not(.elegtelen):hover td { background: #f1f5fa; }
 tr.jeles td { background: #d4f5d0; }
 tr.elegtelen td { background: #f8d2d2; }
 
-/* Szerkesztés a táblában */
 td input { width: 70px; padding: 6px 8px; }
 td #ujNev { width: 100%; box-sizing: border-box; }
 
-/* Műveletek oszlop: a két gomb egymás mellett marad */
 #tanuloTabla td:last-child {
     white-space: nowrap;
     width: 1%;

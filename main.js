@@ -5,6 +5,7 @@ const tanulok = [
     { nev: "Tóth Bence",   szam: 12, betu: "A", atlag: 4.5 },
     { nev: "Horváth Réka", szam: 9,  betu: "B", atlag: 5.0 }
 ];
+const OSZTALYOK = ["A", "B", "C", "D", "E"];
 
 const tbody = document.getElementById("tanuloTabla");
 const kereses = document.getElementById("tanuloKereses");
@@ -29,8 +30,8 @@ function hozzaad() {
             throw new Error("Érvényes nevet adj meg!");
         } else if (szam < 1 || szam > 12) {
             throw new Error("Az osztály számának 1 és 12 között kell lennie!");
-        } else if (!/^[A-Z]$/.test(betu)) {
-            throw new Error("Az osztály betűje A és Z között legyen!");
+        } else if (!OSZTALYOK.includes(betu)) {
+            throw new Error("Az osztály betűje csak A, B, C, D vagy E lehet!");
         } else if (atlag < 1 || atlag > 5) {
             throw new Error("Az átlagnak 1 és 5 között kell lennie!");
         }
@@ -64,8 +65,8 @@ function ment(i) {
             throw new Error("Érvényes nevet adj meg!");
         } else if (szam < 1 || szam > 12) {
             throw new Error("Az osztály számának 1 és 12 között kell lennie!");
-        } else if (!/^[A-Z]$/.test(betu)) {
-            throw new Error("Az osztály betűje A és Z között legyen!");
+        } else if (!OSZTALYOK.includes(betu)) {
+            throw new Error("Az osztály betűje csak A, B, C, D vagy E lehet!");
         } else if (atlag < 1 || atlag > 5) {
             throw new Error("Az átlagnak 1 és 5 között kell lennie!");
         }
@@ -243,6 +244,7 @@ function frissit() {
     statisztika();
     frissitKeresest();
     jegyStatisztika();
+    osztalyStatisztika();
 
 }
 
@@ -264,6 +266,28 @@ function frissitKeresest() {
                 <td>${t.atlag}</td>
             </tr>`).join("")
         : '<tr><td colspan="3">Nincs találat.</td></tr>';
+}
+
+
+function osztalyStatisztika() {
+    let html = "";
+
+    for (const betu of OSZTALYOK) {
+        const osztalyTanulok = tanulok.filter(t => t.betu === betu);
+        let atlagSzoveg = "-";
+
+        if (osztalyTanulok.length > 0) {
+            let osszeg = 0;
+            for (const t of osztalyTanulok) {
+                osszeg += t.atlag;
+            }
+            atlagSzoveg = (osszeg / osztalyTanulok.length).toFixed(2);
+        }
+
+        html += `<p class="stats">${betu} osztály: ${atlagSzoveg}</p>`;
+    }
+
+    document.getElementById("osztalyAtlagok").innerHTML = html;
 }
 
 kereses.addEventListener("input", frissitKeresest);
