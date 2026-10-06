@@ -1,10 +1,11 @@
 const tanulok = [
-    { nev: "Kovács Anna",  osztaly: "9.A",  atlag: 4.8 },
-    { nev: "Nagy Péter",   osztaly: "10.B", atlag: 4.2 },
-    { nev: "Szabó Eszter", osztaly: "11.C", atlag: 3.9 },
-    { nev: "Tóth Bence",   osztaly: "12.A", atlag: 4.5 },
-    { nev: "Horváth Réka", osztaly: "9.B",  atlag: 5.0 }
+    { nev: "Kovács Anna",  szam: 9,  betu: "A", atlag: 4.8 },
+    { nev: "Nagy Péter",   szam: 10, betu: "B", atlag: 4.2 },
+    { nev: "Szabó Eszter", szam: 11, betu: "C", atlag: 3.9 },
+    { nev: "Tóth Bence",   szam: 12, betu: "A", atlag: 4.5 },
+    { nev: "Horváth Réka", szam: 9,  betu: "B", atlag: 5.0 }
 ];
+const OSZTALYOK = ["A", "B", "C", "D", "E"];
 
 const tbody = document.getElementById("tanuloTabla");
 const kereses = document.getElementById("tanuloKereses");
@@ -18,32 +19,25 @@ function keresesiForma(szoveg) {
     return szoveg.toLocaleLowerCase("hu");
 }
 
-// Közös ellenőrzés: hibánál Error-t dob, egyébként visszaadja a tanuló objektumot
-function ellenoriz(nev, osztaly, atlag) {
-    nev = nev.trim();
-    osztaly = osztaly.trim().toUpperCase();
-
-    if (!/^[\p{L} -]+$/u.test(nev)) {
-        throw new Error("Érvényes nevet adj meg: csak betűket és opcionálisan szóközt használj!");
-    } else if (!/^([1-9]|1[0-2])\.[A-E]$/.test(osztaly)) {
-        throw new Error("Az osztály formátuma: szám (1-12), pont, betű (A-E), pl. 12.D!");
-    } else if (atlag < 1 || atlag > 5) {
-        throw new Error("Az átlagnak 1 és 5 között kell lennie!");
-    }
-
-    return { nev, osztaly, atlag };
-}
-
 function hozzaad() {
+    const nev = document.getElementById("nev").value.trim();
+    const szam = Number(document.getElementById("OsztalySzam").value);
+    const betu = document.getElementById("OsztalyBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("atlag").value);
     try {
-        const tanulo = ellenoriz(
-            document.getElementById("nev").value,
-            document.getElementById("Osztaly").value,
-            Number(document.getElementById("atlag").value)
-        );
 
-        tanulok.push(tanulo);
-        if (csakJeles && tanulo.atlag < 4.5) {
+        if (!/^[\p{L} -]+$/u.test(nev)) {
+            throw new Error("Érvényes nevet adj meg: csak betűket és opcionálisan szóközt használj!");
+        } else if (szam < 1 || szam > 12) {
+            throw new Error("Az osztály számának 1 és 12 között kell lennie!");
+        } else if (!/^[A-E]$/.test(betu)) {
+            throw new Error("Az osztály betűje csak A, B, C, D vagy E lehet!");
+        } else if (atlag < 1 || atlag > 5) {
+            throw new Error("Az átlagnak 1 és 5 között kell lennie!");
+        }
+
+        tanulok.push({ nev, szam, betu, atlag });
+        if (csakJeles && atlag < 4.5) {
             csakJeles = false;
             gombokFrissit();
         }
@@ -51,6 +45,8 @@ function hozzaad() {
     } catch (hiba) {
         alert(hiba.message);
     }
+
+
 }
 
 function szerkeszt(i) {
@@ -59,23 +55,35 @@ function szerkeszt(i) {
 }
 
 function ment(i) {
-    try {
-        const tanulo = ellenoriz(
-            document.getElementById("ujNev").value,
-            document.getElementById("ujOsztaly").value,
-            Number(document.getElementById("ujAtlag").value)
-        );
-
-        tanulok[i] = tanulo;
-        szerkesztett = -1;
-        if (csakJeles && tanulo.atlag < 4.5) {
-            csakJeles = false;
-            gombokFrissit();
+    const nev = document.getElementById("ujNev").value.trim();
+    const szam = Number(document.getElementById("ujSzam").value);
+    const betu = document.getElementById("ujBetu").value.toUpperCase();
+    const atlag = Number(document.getElementById("ujAtlag").value);
+    try{
+    
+        if (!/^[\p{L} -]+$/u.test(nev)) {
+            throw new Error("Érvényes nevet adj meg: csak betűket és opcionálisan szóközt használj!");
+        } else if (szam < 1 || szam > 12) {
+            throw new Error("Az osztály számának 1 és 12 között kell lennie!");
+        } else if (!OSZTALYOK.includes(betu)) {
+            throw new Error("Az osztály betűje csak A, B, C, D vagy E lehet!");
+        } else if (atlag < 1 || atlag > 5) {
+            throw new Error("Az átlagnak 1 és 5 között kell lennie!");
         }
+    
+        tanulok[i] = { nev, szam, betu, atlag };
+        szerkesztett = -1;
+        if (csakJeles && atlag < 4.5) {
+           csakJeles = false;
+           gombokFrissit();
+       }
         frissit();
-    } catch (hiba) {
-        alert(hiba.message);
     }
+    catch (e) {
+        alert(e.message);
+    }
+
+
 }
 
 function torol(i) {
@@ -210,7 +218,10 @@ function frissit() {
             html += `
                 <tr class="${osztaly}">
                     <td><input id="ujNev" value="${t.nev}"></td>
-                    <td><input id="ujOsztaly" maxlength="4" value="${t.osztaly}"></td>
+                    <td>
+                        <input id="ujSzam" type="number" value="${t.szam}">
+                        <input id="ujBetu" maxlength="1" value="${t.betu}">
+                    </td>
                     <td><input id="ujAtlag" type="number" step="0.1" value="${t.atlag}"></td>
                     <td><button onclick="ment(${i})">Mentés</button></td>
                 </tr>`;
@@ -218,7 +229,7 @@ function frissit() {
             html += `
                 <tr class="${osztaly}">
                     <td>${t.nev}</td>
-                    <td>${t.osztaly}</td>
+                    <td>${t.szam}.${t.betu}</td>
                     <td>${t.atlag}</td>
                     <td>
                         <button onclick="szerkeszt(${i})">Módosítás</button>
@@ -234,6 +245,7 @@ function frissit() {
     frissitKeresest();
     jegyStatisztika();
     osztalyStatisztika();
+
 }
 
 function frissitKeresest() {
@@ -250,27 +262,27 @@ function frissitKeresest() {
         ? talalatok.map(t => `
             <tr>
                 <td>${t.nev}</td>
-                <td>${t.osztaly}</td>
+                <td>${t.szam}.${t.betu}</td>
                 <td>${t.atlag}</td>
             </tr>`).join("")
         : '<tr><td colspan="3">Nincs találat.</td></tr>';
 }
 
+
 function osztalyStatisztika() {
     let html = "";
 
-    // az osztály "12.D" formátumú, a pont utáni rész a betű
-    // a Set kiszűri az ismétlődéseket, a sort() ábécé sorrendbe teszi
-    const betuk = [...new Set(tanulok.map(t => t.osztaly.split(".")[1]))].sort();
+    for (const betu of OSZTALYOK) {
+        const osztalyTanulok = tanulok.filter(t => t.betu === betu);
+        let atlagSzoveg = "-";
 
-    for (const betu of betuk) {
-        const osztalyTanulok = tanulok.filter(t => t.osztaly.split(".")[1] === betu);
-
-        let osszeg = 0;
-        for (const t of osztalyTanulok) {
-            osszeg += t.atlag;
+        if (osztalyTanulok.length > 0) {
+            let osszeg = 0;
+            for (const t of osztalyTanulok) {
+                osszeg += t.atlag;
+            }
+            atlagSzoveg = (osszeg / osztalyTanulok.length).toFixed(2);
         }
-        const atlagSzoveg = (osszeg / osztalyTanulok.length).toFixed(2);
 
         html += `<p class="stats">${betu} osztály: ${atlagSzoveg}</p>`;
     }
