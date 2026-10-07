@@ -18,15 +18,14 @@ function keresesiForma(szoveg) {
     return szoveg.toLocaleLowerCase("hu");
 }
 
-// Közös ellenőrzés: hibánál Error-t dob, egyébként visszaadja a tanuló objektumot
 function ellenoriz(nev, osztaly, atlag) {
     nev = nev.trim();
     osztaly = osztaly.trim().toUpperCase();
 
     if (!/^[\p{L} -]+$/u.test(nev)) {
         throw new Error("Érvényes nevet adj meg: csak betűket és opcionálisan szóközt használj!");
-    } else if (!/^([1-9]|1[0-2])\.[A-E]$/.test(osztaly)) {
-        throw new Error("Az osztály formátuma: szám (1-12), pont, betű (A-E), pl. 12.D!");
+    } else if (!/^([1-9]|1[0-2])\.[A-Z]$/.test(osztaly)) {
+        throw new Error("Az osztály formátuma: szám (1-12), pont, betű (A-Z), pl. 12.D!");
     } else if (atlag < 1 || atlag > 5) {
         throw new Error("Az átlagnak 1 és 5 között kell lennie!");
     }
@@ -259,8 +258,6 @@ function frissitKeresest() {
 function osztalyStatisztika() {
     let html = "";
 
-    // az osztály "12.D" formátumú, a pont utáni rész a betű
-    // a Set kiszűri az ismétlődéseket, a sort() ábécé sorrendbe teszi
     const betuk = [...new Set(tanulok.map(t => t.osztaly.split(".")[1]))].sort();
 
     for (const betu of betuk) {
